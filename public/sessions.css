@@ -1,0 +1,88 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --ff-body: "Roboto", sans-serif;
+
+    --fw-body: 400;
+    --fw-header: 700;
+
+    --fs-large: 2rem;
+    --fs-normal: 1.125rem;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    padding-block: clamp(1.5rem, 2rem, 3rem);
+}
+
+h1 {
+    margin: 0;
+    padding-block: .5rem;
+    font-size: var(--fs-large);
+    font-family: var(--ff-body);
+    font-weight: var(--fw-header);
+}
+
+p {
+    margin: 0;
+    padding-block: .5rem;
+    font-size: var(--fs-normal);
+    font-family: var(--ff-body);
+    font-weight: var(--fw-body);
+}
+
+/* Login Form CSS */
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    margin-inline: auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #232323;
+    padding: 2.5rem;
+    border-radius: 50px;
+    background-color: lightblue;
+}
+
+form button {
+    max-width: 50%;
+}
+
+/* Artist Song Search CSS */
+
+#song-search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    margin-inline: auto;
+}
+
+/* Search Result CSS */
+
+#search-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    margin-inline: auto;
+}
