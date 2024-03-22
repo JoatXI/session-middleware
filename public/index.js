@@ -1,11 +1,25 @@
-
-checkLogin();
-
 async function checkLogin() {
     // ask the server whether the user is logged in (GET /login)
     // query the object returned by the server to see if the username is null or not null
     // if null, display login form
     // if not null, display search artist form
+    try {
+        const res = await fetch('/login');
+
+        const userSessions = await res.json();
+        if (userSessions.username == null) {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('song-search').style.display = 'none';
+            document.getElementById('logout').style.display = 'none';
+        } else if (userSessions.username != null) {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('song-search').style.display = 'flex';
+            document.getElementById('logout').style.display = 'flex';
+        }
+
+    } catch (e) {
+        alert(`Error occured: ${e}`);
+    }
 }
 
 async function ajaxLogin(details) {
@@ -22,7 +36,7 @@ async function ajaxLogin(details) {
             alert('Invalid login details');
         } else if (res.status == 200) {
             alert(`Logged in as ${details.username}`);
-            document.getElementById("logout").style.display = "block";
+            document.getElementById("logout").style.display = "flex";
             document.getElementById('login-form').style.display = 'none';
             document.getElementById('song-search').style.display = 'flex';
         }
@@ -42,7 +56,7 @@ async function ajaxSearch(artistName) {
 		//let html = "";
 		songList.forEach(song => {
 			const node1 = document.createElement("p");
-			const textNode = document.createTextNode(`Artist Name: ${song.artist} Song Title: ${song.title} Year: ${song.year}`);
+			const textNode = document.createTextNode(`${song.artist}, ${song.title}, Released: ${song.year}`);
 			
 			node1.appendChild(textNode);
 			
@@ -104,9 +118,10 @@ async function ajaxLogout() {
 
         if(res.status == 200) {
             alert("You have been logged out");
-            document.getElementById("login-form").style.display = "flex";
+            document.getElementById("login-form").style.display = "block";
             document.getElementById("logout").style.display = "none";
             document.getElementById("song-search").style.display = "none";
+            document.getElementById("search-results").style.display = "none";
         }
 
     } catch (e) {
@@ -133,3 +148,5 @@ document.getElementById('ajaxSearch').addEventListener('click', ()=> {
 document.getElementById('logoutButton').addEventListener('click', ()=> {
     ajaxLogout();
 });
+
+checkLogin();
