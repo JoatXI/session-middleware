@@ -1,11 +1,14 @@
 import express from 'express';
-import Database from 'better-sqlite3';
+import 'dotenv/config';
 import betterSqlite3Session from 'express-session-better-sqlite3';
 import expressSession from 'express-session';
+import usersRouter from './routes/users.mjs';
+import checkUser from './middleware/checkuser.mjs';
 import * as crypto from 'crypto';
+import db from './routes/db.mjs';
+import Database from 'better-sqlite3';
 
 const app = express();
-const db = new Database('wadsongs.db');
 const sessDb = new Database('session.db'); // sqlite database to store session data
 
 const SqliteStore = betterSqlite3Session(expressSession, sessDb); // creates a session store
@@ -48,6 +51,8 @@ app.use(expressSession({
     }
 }));
 
+app.use('/users', usersRouter);
+
 /*
 app.use((req, res, next) => {
 	console.log("Session is");
@@ -56,44 +61,7 @@ app.use((req, res, next) => {
 })
 */
 
-app.post('/login', (req, res) => {
-	try {
-		const stmt = db.prepare('SELECT * FROM ht_users WHERE username = ? AND password = ?')
-		const results = stmt.all(req.body.username, req.body.password);
-		if(results.length == 1) {
-			req.session.username = results[0].username;
-			res.json({"username": results[0].username});
-		} else {
-			res.status(401).json({error: "Invalid Login, Try again!"});
-		}
-	} catch(error) {
-		res.status(500).json({ error: error });
-	}
-});
-
-// Logout route
-app.post('/logout', (req, res) => {
-    req.session = null;
-    res.json({'success': 1 });
-});
-
-// middleware that protects routes using POST or DELETE from access by users who are are not logged in
-app.use( (req, res, next) => {
-    if(["POST", "DELETE"].indexOf(req.method) == -1) {
-        next();
-    } else {
-        if(req.session.username) { 
-            next();
-        } else {
-            res.status(401).json({error: "You're not logged in. Go away!"});
-        }
-    }
-});
-
-// 'GET' login route - useful for clients to obtain currently logged in user
-app.get('/login', (req, res) => {
-    res.json({username: req.session.username || null} );
-});
+app.use(checkUser);
 
 // homepage/root route
 app.get('/', (req, res) => {

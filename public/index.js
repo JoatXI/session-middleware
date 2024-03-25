@@ -4,7 +4,7 @@ async function checkLogin() {
     // if null, display login form
     // if not null, display search artist form
     try {
-        const res = await fetch('/login');
+        const res = await fetch('/users/login');
 
         const userSessions = await res.json();
         if (userSessions.username == null) {
@@ -24,7 +24,7 @@ async function checkLogin() {
 
 async function ajaxLogin(details) {
     try {
-        const res = await fetch(`/login`, {
+        const res = await fetch(`/users/login`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -112,7 +112,7 @@ async function ajaxBuy(purchaseSong) {
 
 async function ajaxLogout() {
     try {
-        const res = await fetch(`/logout`, {
+        const res = await fetch(`/users/logout`, {
             method: 'POST'
         });
 
