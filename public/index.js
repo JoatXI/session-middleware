@@ -48,7 +48,7 @@ async function ajaxLogin(details) {
 
 async function ajaxSearch(artistName) {
 	try {
-		const response = await fetch(`/uknumberones/artist/${artistName}`);
+		const response = await fetch(`/songs/uknumberones/artist/${artistName}`);
 		
 		const songList = await response.json();
 		
@@ -90,7 +90,7 @@ async function ajaxBuy(purchaseSong) {
 			quantity: document.getElementById(`quantity${purchaseSong.id}`).value
 		}
 		
-		const response = await fetch(`/uknumberones/${purchaseSong.id}/buy`, {
+		const response = await fetch(`/songs/uknumberones/${purchaseSong.id}/buy`, {
 			method: 'POST',
 			headers: {
 				'Content-Type' : 'application/json'
