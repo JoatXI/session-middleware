@@ -3,9 +3,9 @@ import 'dotenv/config';
 import betterSqlite3Session from 'express-session-better-sqlite3';
 import expressSession from 'express-session';
 import usersRouter from './routes/users.mjs';
+import songsRouter from './routes/songs.mjs';
 import checkUser from './middleware/checkuser.mjs';
 import * as crypto from 'crypto';
-import db from './routes/db.mjs';
 import Database from 'better-sqlite3';
 
 const app = express();
@@ -52,6 +52,8 @@ app.use(expressSession({
 }));
 
 app.use('/users', usersRouter);
+
+app.use('/songs', songsRouter);
 
 /*
 app.use((req, res, next) => {

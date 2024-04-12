@@ -5,7 +5,7 @@ const songsRouter = express.Router();
 
 
 // search for Artists
-app.get('/uknumberones/artist/:artist', (req, res) => {
+songsRouter.get('/uknumberones/artist/:artist', (req, res) => {
 	try {
 		const stmt = db.prepare('SELECT * FROM wadsongs WHERE artist = ?');
 		const results = stmt.all(req.params.artist);
@@ -16,7 +16,7 @@ app.get('/uknumberones/artist/:artist', (req, res) => {
 });
 
 // search for song by title
-app.get('/uknumberones/title/:title', (req, res) => {
+songsRouter.get('/uknumberones/title/:title', (req, res) => {
 	try {
 		const stmt = db.prepare('SELECT * FROM wadsongs WHERE title = ?');
 		const results = stmt.all(req.params.title);
@@ -27,7 +27,7 @@ app.get('/uknumberones/title/:title', (req, res) => {
 });
 
 // search for song by artist and title (i.e both artsist name and song title)
-app.get('/uknumberones/artistttitle/:artist/:title', (req, res) => {
+songsRouter.get('/uknumberones/artistttitle/:artist/:title', (req, res) => {
 	try {
 		const stmt = db.prepare('SELECT * FROM wadsongs WHERE artist = ? AND title = ?');
 		const results = stmt.all(req.params.artist, req.params.title)
@@ -38,7 +38,7 @@ app.get('/uknumberones/artistttitle/:artist/:title', (req, res) => {
 });
 
 // search for song by id
-app.get('/uknumberones/id/:id', (req, res) => {
+songsRouter.get('/uknumberones/id/:id', (req, res) => {
 	try {
 		const stmt = db.prepare('SELECT * FROM wadsongs WHERE id = ?');
 		const results = stmt.all(req.params.id);
@@ -48,7 +48,7 @@ app.get('/uknumberones/id/:id', (req, res) => {
 	}
 });
 
-app.get('/uknumberones/hometown/:artist', (req, res) => {
+songsRouter.get('/uknumberones/hometown/:artist', (req, res) => {
 	try {
 		const stmt = db.prepare('SELECT * FROM artists WHERE name = ?');
 		const result = stmt.all(req.params.artist);
@@ -58,7 +58,7 @@ app.get('/uknumberones/hometown/:artist', (req, res) => {
 	}
 });
 
-app.post('/uknumberones/:id/buy', (req, res) => {
+songsRouter.post('/uknumberones/:id/buy', (req, res) => {
     try {
 		if(req.body.quantity == "") {
 			res.status(400).json({ error: "Quantity not specified"});
@@ -76,7 +76,7 @@ app.post('/uknumberones/:id/buy', (req, res) => {
     }
 });
 
-app.delete('/uknumberones/:id', (req, res) => {
+songsRouter.delete('/uknumberones/:id', (req, res) => {
     try {
         const stmt = db.prepare('DELETE FROM wadsongs WHERE id=?');
         const info = stmt.run(req.params.id);
@@ -90,7 +90,7 @@ app.delete('/uknumberones/:id', (req, res) => {
     }
 });
 
-app.post('/uknumberones/add', (req, res) => {
+songsRouter.post('/uknumberones/add', (req, res) => {
 	try {
 		if (req.body.title == "" || req.body.artist == "" || req.body.year == "" || req.body.downloads == "" || req.body.price == "" || req.body.quantity == "") {
 			res.status(400).json({error: 'Error Bad Request! input data is empty'});
@@ -104,7 +104,7 @@ app.post('/uknumberones/add', (req, res) => {
 	}
 });
 
-app.put('/uknumberones/:id', (req, res) => {
+songsRouter.put('/uknumberones/:id', (req, res) => {
 	try {
 		const stmt = db.prepare('UPDATE wadsongs SET price = ?, quantity = ? WHERE id = ?');
 		const info = stmt.run(req.body.price, req.body.quantity, req.params.id);
